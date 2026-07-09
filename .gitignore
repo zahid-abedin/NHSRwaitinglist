@@ -72,3 +72,15 @@ docs
 
 # Python virtual environment (avoid committing local deps)
 .venv/
+
+# Example files
+inst/examples/national_table_(OLD).ipynb
+inst/examples/national_table/
+inst/examples/national_table/national_table_output/
+national_table_output/
+
+# Quarto files
+inst/quarto/rtt_improvement_report.qmd
+
+# Scratch files
+inst/scripts/SCRATCH_*
