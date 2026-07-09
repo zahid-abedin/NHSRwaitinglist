@@ -18,5 +18,24 @@ OPCS4.csv
 
 # ignore development artifacts
 ^development_files$
+^inst/scripts/manual_test_wl_removal_stats_hist\.R$
 ^\.positai$
 ^\.claude$
+
+# Exclude local Python virtual environment
+^\.venv$
+
+# Output files from R CMD build
+^[^/]*\.tar\.gz$
+
+# Example files
+^inst/examples/national_table_\(OLD\)\.ipynb$
+^inst/examples/national_table$
+^inst/examples/national_table/national_table_output$
+^national_table_output$
+
+# Quarto files
+^inst/quarto/rtt_improvement_report\.qmd$
+
+# Scratch files
+^inst/scripts/SCRATCH_.*$
