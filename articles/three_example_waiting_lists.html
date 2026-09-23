@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Three example waiting lists • NHSRwaitinglist</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Three example waiting lists">
 </head>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">NHSRwaitinglist</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/example_walkthrough.html">Walkthrough of waiting list functions</a></li>
+    <li><a class="dropdown-item" href="../articles/histogram_analysis.html">Analysing Waiting Lists with Histogram Data</a></li>
+    <li><a class="dropdown-item" href="../articles/histogram_walkthrough.html">Walkthrough of Histogram Waiting List Functions</a></li>
     <li><a class="dropdown-item" href="../articles/three_example_waiting_lists.html">Three example waiting lists</a></li>
     <li><a class="dropdown-item" href="../articles/waiting_list_sim.html">Exploring waiting list management strategies with simulation</a></li>
   </ul>
@@ -159,7 +161,7 @@ our demand is bigger than our capacity.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"A growing waiting list"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="three_example_waiting_lists_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
+<p><img src="three_example_waiting_lists_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="576"></p>
 <div class="section level3">
 <h3 id="referral-statistics">Referral statistics<a class="anchor" aria-label="anchor" href="#referral-statistics"></a>
 </h3>
@@ -212,8 +214,8 @@ standard non-cancer referral.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">overall_stats</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   mean_demand mean_capacity     load load_too_big count_demand queue_size</span></span>
 <span><span class="co">#&gt; 1    9.818065      9.001294 1.090739         TRUE         2174        185</span></span>
-<span><span class="co">#&gt;   target_queue_size queue_too_big mean_wait cv_arrival cv_removal</span></span>
-<span><span class="co">#&gt; 1          44.18129          TRUE  64.63784   1.131775  0.5363836</span></span>
+<span><span class="co">#&gt;   target_queue_size queue_too_big mean_wait_age mean_wait cv_arrival cv_removal</span></span>
+<span><span class="co">#&gt; 1          44.18129          TRUE      64.63784  64.63784   1.131775  0.5363836</span></span>
 <span><span class="co">#&gt;   target_capacity relief_capacity pressure</span></span>
 <span><span class="co">#&gt; 1              NA        15.23417 7.181982</span></span></code></pre></div>
 <p>This gives us a lot of useful information. Taking it step by
@@ -245,7 +247,7 @@ queue.</p>
 <th align="center">queue_size</th>
 <th align="center">target_queue_size</th>
 <th align="center">queue_too_big</th>
-<th align="center">mean_wait</th>
+<th align="center">mean_wait_age</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td align="center">185</td>
@@ -254,11 +256,12 @@ queue.</p>
 <td align="center">64.63784</td>
 </tr></tbody>
 </table>
-<p>There is a column to report the actual average patient waiting time,
-which is 64.64 weeks, compared to our target of 18 weeks.</p>
+<p>There is a column to report the average waiting time of the patients
+on the list, which is 64.64 weeks, compared to our target of 18
+weeks.</p>
 <table class="table">
 <thead><tr class="header">
-<th align="center">mean_wait</th>
+<th align="center">mean_wait_age</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td align="center">64.63784</td>
@@ -354,7 +357,7 @@ simulated period.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"A finely-balanced waiting list"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="three_example_waiting_lists_files/figure-html/unnamed-chunk-14-1.png" width="576"></p>
+<p><img src="three_example_waiting_lists_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="576"></p>
 <p>This time we will go straight to calculating the overall
 statistics.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -366,8 +369,8 @@ statistics.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">overall_stats</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   mean_demand mean_capacity      load load_too_big count_demand queue_size</span></span>
 <span><span class="co">#&gt; 1    10.10458      10.12941 0.9975489        FALSE         2236         22</span></span>
-<span><span class="co">#&gt;   target_queue_size queue_too_big mean_wait cv_arrival cv_removal</span></span>
-<span><span class="co">#&gt; 1          45.47063         FALSE  6.863636   1.153809  0.6896719</span></span>
+<span><span class="co">#&gt;   target_queue_size queue_too_big mean_wait_age mean_wait cv_arrival cv_removal</span></span>
+<span><span class="co">#&gt; 1          45.47063         FALSE      6.863636  6.863636   1.153809  0.6896719</span></span>
 <span><span class="co">#&gt;   target_capacity relief_capacity  pressure</span></span>
 <span><span class="co">#&gt; 1        10.30535              NA 0.7626263</span></span></code></pre></div>
 <p>In this finely balanced example, the mean demand and mean capacity
@@ -438,7 +441,7 @@ non-negligible fraction of time where services are not being used.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"A stable waiting list"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="three_example_waiting_lists_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
+<p><img src="three_example_waiting_lists_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" alt="" width="576"></p>
 <p>Again calculating the overall statistics.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">overall_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/wl_stats.html">wl_stats</a></span><span class="op">(</span></span>
@@ -449,8 +452,8 @@ non-negligible fraction of time where services are not being used.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">overall_stats</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   mean_demand mean_capacity      load load_too_big count_demand queue_size</span></span>
 <span><span class="co">#&gt; 1    9.698904      10.14005 0.9564943        FALSE         2149          7</span></span>
-<span><span class="co">#&gt;   target_queue_size queue_too_big mean_wait cv_arrival cv_removal</span></span>
-<span><span class="co">#&gt; 1          43.64507         FALSE 0.8571429   1.173034  0.7247564</span></span>
+<span><span class="co">#&gt;   target_queue_size queue_too_big mean_wait_age mean_wait cv_arrival cv_removal</span></span>
+<span><span class="co">#&gt; 1          43.64507         FALSE     0.8571429 0.8571429   1.173034  0.7247564</span></span>
 <span><span class="co">#&gt;   target_capacity relief_capacity  pressure</span></span>
 <span><span class="co">#&gt; 1        9.910157              NA 0.0952381</span></span></code></pre></div>
 <p>This time the simulation has created a mean demand and capacity which
@@ -488,7 +491,7 @@ effect on the behaviour of a waiting list.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
